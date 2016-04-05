@@ -42,17 +42,15 @@ class GuessTest(unittest.TestCase):
 
     def test_guess_bool_f(self):
         gtype = guess(['present', 'f', 'f'])
-        print gtype
         self.assertTrue('string.boolean' == gtype)
 
-    def test_guess_gender(self):
+    def test_guess_vgender(self):
         gtype = guess(['present', 'm', 'o'])
-        self.assertTrue('string.vcard.gender' == gtype)
+        self.assertTrue('string.vcard.vgender' == gtype)
 
-    def test_guess_gender_u(self):
+    def test_guess_vgender_u(self):
         gtype = guess(['u', 'f', 'z'])
-        self.assertTrue('string.vcard.gender' == gtype)
-
+        self.assertTrue('string.vcard.vgender' == gtype)
 
 if __name__ == '__main__':
     unittest.main()

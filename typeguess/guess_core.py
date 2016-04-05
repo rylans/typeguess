@@ -15,15 +15,32 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 '''
+
+
 def guess(lst, raise_error=False):
     '''guess datatype from data
 
     if raise_error is True, then an error will be raised
     when no type can be determined. otherwise None is returned
 
-    vcard properties:
-        string.vcard.lang: LANG http://tools.ietf.org/html/rfc6350#section-6.4.4
-        string.vcard.gender: GENDER http://tools.ietf.org/html/rfc6350#section-6.2.7
+    vCard properties:
+        LANG http://tools.ietf.org/html/rfc6350#section-6.4.4
+        string.vcard.lang, fn=TODO
+
+        GENDER http://tools.ietf.org/html/rfc6350#section-6.2.7
+        string.vcard.gender, fn=vgender
+
+        GEO http://tools.ietf.org/html/rfc6350#section-6.5.2
+        string.vcard.geo, fn=TODO
+
+        TEL https://tools.ietf.org/html/rfc6350#section-6.4.1
+        string.vcard.tel, fn=TODO
+
+        TZ https://tools.ietf.org/html/rfc6350#section-6.5.1
+        string.vcard.tz, fn=TODO
+
+        URL https://tools.ietf.org/html/rfc6350#section-6.7.8
+        string.vcard.url, fn=TODO
 
     XML Schema:
         string.xml.string: xs:string https://www.w3.org/TR/xmlschema-2/#string
@@ -97,7 +114,7 @@ def guess_string(lst):
     kind += (guess_url(lst) or '')
     if guess_bool(lst):
         return kind + guess_bool(lst)
-    kind += (guess_gender(lst) or '')
+    kind += (guess_vgender(lst) or '')
 
     return kind
 
@@ -106,9 +123,9 @@ def guess_bool(lst):
         return '.boolean'
     return None
 
-def guess_gender(lst):
-    if most_gender(lst):
-        return '.vcard.gender'
+def guess_vgender(lst):
+    if most_vgender(lst):
+        return '.vcard.vgender'
     return None
 
 def guess_email(lst):
@@ -139,8 +156,8 @@ def most_str(lst):
 def most_booly(lst):
     return _most(booly, lst)
 
-def most_gender(lst):
-    return _most(gender, lst)
+def most_vgender(lst):
+    return _most(vgender, lst)
 
 def _most(f, lst):
     vals = [v for v in [_try(f, l) for l in lst] if v is not None]
@@ -187,18 +204,18 @@ def booly(datum):
         return str(datum)
     raise ValueError('Probably not boolean')
 
-def gender(datum):
+def vgender(datum):
     '''vCard gender
 
     See http://tools.ietf.org/html/rfc6350#section-6.2.7
 
-    >>> gender('m')
+    >>> vgender('m')
     'm'
 
-    >>> gender('F;lady lol')
+    >>> vgender('F;lady lol')
     'F;lady lol'
 
-    >>> gender('foobar')
+    >>> vgender('foobar')
     Traceback (most recent call last):
     ValueError: Not vCard gender
     '''
