@@ -14,6 +14,18 @@ Examples
     >>> guess(['hanson@mail.org'])
     'string.email'
 
+.. code:: python
+
+    >>> from typeguess import guess
+    >>> guess(['m', 'f'])
+    'string.vcard.gender'
+
+Planned Features
+~~~~~~~~~~~~~~~~
+
+-  vCard types
+-  XML Schema types
+
 License
 -------
 

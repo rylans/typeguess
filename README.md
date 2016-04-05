@@ -14,6 +14,17 @@ Automatically guess data types
 'string.email'
 ```
 
+```python
+>>> from typeguess import guess
+>>> guess(['m', 'f'])
+'string.vcard.gender'
+```
+
+### Planned Features
+
+* vCard types
+* XML Schema types
+
 ## License
 
 Apache 2.0
