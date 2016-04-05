@@ -8,7 +8,7 @@ def read(f):
     return open(f, encoding='utf-8').read()
 
 setup(name='typeguess',
-      version='0.0.1',
+      version='0.0.2',
       description='Data type guesser',
       long_description=read('README.rst'),
       author='Rylan Santinon',
