@@ -8,6 +8,6 @@ install:
   - pip install coveralls
   - pip install .
 script: 
-  - nosetests --with-coverage --cover-package=hnapi
+  - nosetests --with-coverage --cover-package=typeguess
 after_success:
   coveralls
