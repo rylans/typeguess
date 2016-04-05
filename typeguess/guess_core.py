@@ -150,9 +150,5 @@ def url(datum):
     raise ValueError('Probably not a url')
 
 if __name__ == '__main__':
-    print guess(['Henry Parker', 'Martin Lawrence', 'Jane T. Goodall'])
-    print guess(['readings', 23.1, 0.01])
-    print guess(['date-of-birth', 1975, 1982, 2001, 1946, 1982, 1899])
-    print guess(['email addresses', 'jk@gmail.com', 'p.hanson@rq.org'])
-    print guess(['homepages', 'https://www.facebook.com/1234',
-                 'www.atlassian.net', 'http://edu.edu'])
+    import doctest
+    doctest.testmod()
