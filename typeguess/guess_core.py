@@ -21,12 +21,24 @@ def guess(lst, raise_error=False):
     if raise_error is True, then an error will be raised
     when no type can be determined. otherwise None is returned
 
+    vcard properties:
+        string.vcard.lang: LANG http://tools.ietf.org/html/rfc6350#section-6.4.4
+        string.vcard.gender: GENDER http://tools.ietf.org/html/rfc6350#section-6.2.7
+
+    XML Schema:
+        string.xml.string: xs:string https://www.w3.org/TR/xmlschema-2/#string
+        string.xml.boolean xs:boolean https://www.w3.org/TR/xmlschema-2/#boolean
+        string.xml.date xs:date https://www.w3.org/TR/xmlschema-2/#date
+        string.xml.hex xs:hexBinary https://www.w3.org/TR/xmlschema-2/#hexBinary
+        number.xml.float xs:float https://www.w3.org/TR/xmlschema-2/#float
+
     string-name
     string-email
     string-text
     string-url
     string-categorical
     string-location
+    string-boolean
     string
 
     number-float
@@ -37,8 +49,6 @@ def guess(lst, raise_error=False):
     time-date
     time-timestamp
     time
-
-    boolean
     '''
     kind = (guess_number(lst) or
             guess_string(lst) or
@@ -46,6 +56,7 @@ def guess(lst, raise_error=False):
     if not kind and raise_error:
         raise RuntimeError('Could not determine type')
     return kind
+
 
 def guess_number(lst):
     '''guess number
@@ -84,8 +95,21 @@ def guess_string(lst):
 
     kind += (guess_email(lst) or '')
     kind += (guess_url(lst) or '')
+    if guess_bool(lst):
+        return kind + guess_bool(lst)
+    kind += (guess_gender(lst) or '')
 
     return kind
+
+def guess_bool(lst):
+    if most_booly(lst):
+        return '.boolean'
+    return None
+
+def guess_gender(lst):
+    if most_gender(lst):
+        return '.vcard.gender'
+    return None
 
 def guess_email(lst):
     if most_email(lst):
@@ -112,17 +136,23 @@ def most_url(lst):
 def most_str(lst):
     return _most(str, lst)
 
+def most_booly(lst):
+    return _most(booly, lst)
+
+def most_gender(lst):
+    return _most(gender, lst)
+
 def _most(f, lst):
-    vals = [v for v in [_try_(f, l) for l in lst] if v is not None]
+    vals = [v for v in [_try(f, l) for l in lst] if v is not None]
     return len(vals) > float(len(lst))/2.0
 
 def any_float(lst):
-    return any([_try_(float, l) for l in lst])
+    return any([_try(float, l) for l in lst])
 
 def any_int(lst):
-    return any([_try_(int, l) for l in lst])
+    return any([_try(int, l) for l in lst])
 
-def _try_(f, datum):
+def _try(f, datum):
     '''try to apply f to datum. Return None if ValueError occurs'''
     try:
         return f(datum)
@@ -148,6 +178,35 @@ def url(datum):
             'www.' in str(datum)):
         return str(datum)
     raise ValueError('Probably not a url')
+
+def booly(datum):
+    '''boolean value'''
+    lower = str(datum).lower()
+    booleans = ['true', 'false', 't', 'f']
+    if lower in booleans:
+        return str(datum)
+    raise ValueError('Probably not boolean')
+
+def gender(datum):
+    '''vCard gender
+
+    See http://tools.ietf.org/html/rfc6350#section-6.2.7
+
+    >>> gender('m')
+    'm'
+
+    >>> gender('F;lady lol')
+    'F;lady lol'
+
+    >>> gender('foobar')
+    Traceback (most recent call last):
+    ValueError: Not vCard gender
+    '''
+    options = ['m', 'f', 'o', 'n', 'u']
+    symbol = str(datum).lower().split(';')[0]
+    if symbol in options:
+        return str(datum)
+    raise ValueError('Not vCard gender')
 
 if __name__ == '__main__':
     import doctest

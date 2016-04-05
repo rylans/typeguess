@@ -34,7 +34,25 @@ class GuessTest(unittest.TestCase):
 
     def test_guess_float(self):
         gtype = guess(['readings', 23.1, 0.01])
-        self.assertTrue('number' is gtype)
+        self.assertTrue('number' == gtype)
+
+    def test_guess_bool(self):
+        gtype = guess(['present', 'True', 'True'])
+        self.assertTrue('string.boolean' == gtype)
+
+    def test_guess_bool_f(self):
+        gtype = guess(['present', 'f', 'f'])
+        print gtype
+        self.assertTrue('string.boolean' == gtype)
+
+    def test_guess_gender(self):
+        gtype = guess(['present', 'm', 'o'])
+        self.assertTrue('string.vcard.gender' == gtype)
+
+    def test_guess_gender_u(self):
+        gtype = guess(['u', 'f', 'z'])
+        self.assertTrue('string.vcard.gender' == gtype)
+
 
 if __name__ == '__main__':
     unittest.main()
