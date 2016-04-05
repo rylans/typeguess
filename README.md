@@ -1,4 +1,8 @@
-# typeguess
+typeguess
+=========
+
+[![Build Status](https://travis-ci.org/rylans/typeguess.svg?branch=master)](https://travis-ci.org/rylans/typeguess)
+
 Automatically guess data types
 
 

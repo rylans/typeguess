@@ -1,6 +1,8 @@
 typeguess
 =========
 
+|Build Status|
+
 Automatically guess data types
 
 Examples
@@ -16,3 +18,6 @@ License
 -------
 
 Apache 2.0
+
+.. |Build Status| image:: https://travis-ci.org/rylans/typeguess.svg?branch=master
+   :target: https://travis-ci.org/rylans/typeguess
