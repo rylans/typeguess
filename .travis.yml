@@ -8,6 +8,8 @@ install:
   - pip install coveralls
   - pip install .
 script: 
+  - python -m typeguess.guess_core
+  - python -m typeguess.vcard_translator
   - nosetests --with-coverage --cover-package=typeguess
 after_success:
   coveralls
